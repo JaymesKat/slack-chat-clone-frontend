@@ -4,6 +4,11 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faBell, faPlus, faUser, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons'
+ 
+library.add(faBell, faPlus, faUser, faArrowAltCircleRight)
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
