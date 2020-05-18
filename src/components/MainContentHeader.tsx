@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { StoreContext } from "../store/store";
+import { AuthContext } from "../context/authContext";
 
 const Container = styled.div`
   position: fixed;
@@ -14,6 +16,10 @@ const Container = styled.div`
   align-items: center;
   padding: 1rem 0;
   border-bottom: 1px solid lightgrey;
+
+  strong {
+    font-weight: bold;
+  }
 `;
 
 const Title = styled.div`
@@ -44,20 +50,38 @@ const Input = styled.input`
 `;
 
 export function MainContentHeader() {
+  const { selectedChannel } = React.useContext(StoreContext);
+  const logout = React.useContext(AuthContext);
   return (
     <Container>
-      <Title>
-        <div>
-          <h3>&#35;general</h3>
-        </div>
-        <div>
-          <FontAwesomeIcon icon='user' pull='left' />
-          42 members
-        </div>
-      </Title>
-      <div>
-        <Input type='text' placeholder='search' />
-      </div>
+      {selectedChannel && selectedChannel.Memberships && (
+        <>
+          <Title>
+            <div>
+              <h3>&#35;{selectedChannel.name}</h3>
+            </div>
+            <div>
+              <FontAwesomeIcon icon='user' pull='left' />
+              {`${selectedChannel.Memberships.length || 0} member${
+                selectedChannel.Memberships.length > 1 ? "s" : ""
+              }`}
+            </div>
+          </Title>
+          <div>
+            <Input type='text' placeholder='search' />
+            <FontAwesomeIcon
+              style={{ cursor: "pointer" }}
+              icon='sign-out-alt'
+              pull='right'
+              color='dimgrey'
+              size='2x'
+              title='Log out'
+              onClick={logout}
+            />
+          </div>
+        </>
+      )}
+      {!selectedChannel && (<p>Click <strong><FontAwesomeIcon icon='plus' /> Add Channel</strong> in the sidebar to browse available channels</p>)}
     </Container>
   );
 }

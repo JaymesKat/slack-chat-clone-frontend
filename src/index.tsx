@@ -1,22 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import ReactDOM from "react-dom";
+import "./index.css";
+import { makeAuthRouting } from "./routing";
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBell, faPlus, faUser, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons'
- 
-library.add(faBell, faPlus, faUser, faArrowAltCircleRight)
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBell,
+  faPlus,
+  faUser,
+  faTimesCircle,
+  faPaperclip,
+  faSpinner,
+  faPencilAlt,
+  faTrash,
+  faSignOutAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+library.add(
+  faBell,
+  faPlus,
+  faUser,
+  faTimesCircle,
+  faPaperclip,
+  faSpinner,
+  faPencilAlt,
+  faTrash,
+  faSignOutAlt
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(makeAuthRouting(), document.getElementById("root"));

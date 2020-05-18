@@ -1,6 +1,8 @@
-import { UserModel } from './UserModel'
+import { UserModel } from "./UserModel";
 
 export interface ChannelModel {
-    name: string
-    id: string
+  name: string;
+  id: string;
+  direct: boolean;
+  Memberships: any;
 }

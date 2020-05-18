@@ -1,8 +1,11 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Status } from './Sidebar';
-import { Spinner } from './utility/Spinner'
+import * as React from "react";
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Status } from "./Sidebar";
+import { Spinner } from "./utility/Spinner";
+import { StoreContext } from "../store/store";
+import { selectChannel } from "../store/actions";
+import { fetchDMChannels } from "../api/channels";
 
 const MessagesTitles = styled.div`
   margin: 2rem 0 1rem;
@@ -10,51 +13,56 @@ const MessagesTitles = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  cursor: pointer;
   h2 {
     font-size: 1rem;
+    cursor: auto;
   }
 `;
 
 const MessageItem = styled.li`
   margin: 0.25rem 0;
+  cursor: pointer;
 `;
 
 export function DirectMessages() {
+  const [channels, setChannels] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  const [channels, setChannels] =  React.useState([])
-  const [isLoading, setIsLoading] = React.useState(true)
+  const { user, dispatch } = React.useContext(StoreContext);
 
   React.useEffect(() => {
-    fetch(
-      `https://jh1yx4w8z9.execute-api.us-east-1.amazonaws.com/dev/users/230e91f9-cf48-4910-8f39-190fb4830f4d/directmessages`,
-      {
-        method: "GET"
-      }
-    )
-      .then(res => res.json())
-      .then((response) => {
-        setChannels(response)
-        setIsLoading(false)
-      })
-      .catch(error => console.log(error));
-  }, []);
+    if (user) {
+      setIsLoading(true);
+      fetchDMChannels(user.id)
+        .then((response) => {
+          setChannels(response);
+        })
+        .catch((error) => console.log(error));
+      setIsLoading(false);
+    }
+  }, [user]);
 
-  if(isLoading){
-    return <Spinner/>
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
     <>
       <MessagesTitles>
         <h2>Messages</h2>
-        <FontAwesomeIcon icon="plus"/>
+        <FontAwesomeIcon icon='plus' />
       </MessagesTitles>
       <ul>
-        {channels.map(channel => (
-          <MessageItem key={channel['id']}>
-            <Status /> {channel['name']}
-          </MessageItem>
-        ))}
+        {channels.length > 0 &&
+          channels.map((channel) => (
+            <MessageItem
+              onClick={() => selectChannel(channel, dispatch)}
+              key={channel["id"]}
+            >
+              <Status /> {channel["name"]}
+            </MessageItem>
+          ))}
       </ul>
     </>
   );

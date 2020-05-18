@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Channels } from './Channels';
 import { DirectMessages } from './DirectMessages';
-
+import { StoreContext } from '../store/store'
 const SidebarContainer = styled.div`
   height: 100%;
   background: rebeccapurple;
@@ -40,17 +40,18 @@ export const Status = styled.span`
 `;
 
 export function Sidebar() {
+  const { user } = React.useContext(StoreContext)
   return (
     <SidebarContainer>
       <Header>
-        <H1>Slack clone</H1>
+        <H1>Slack chat</H1>
         <div>
         <FontAwesomeIcon icon="bell" pull="right"/>
 
         </div>
         <UsernameContainer>
           <Status />
-          John Doe
+          {user && (user.name)}
         </UsernameContainer>
       </Header>
       <Channels />
