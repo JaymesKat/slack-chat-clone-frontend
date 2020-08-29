@@ -123,7 +123,7 @@ export function MessageBox() {
 
   React.useEffect(() => {
     ws.current = new WebSocket(
-      "wss://8yl2t66wok.execute-api.us-east-1.amazonaws.com/dev"
+      "wss://xx9p3scloj.execute-api.us-east-1.amazonaws.com/dev"
     );
     ws.current.onopen = () => console.log("ws opened");
     ws.current.onclose = () => console.log("ws closed");

@@ -78,7 +78,9 @@ export function InputMessage() {
   const ws: any = React.useRef(null);
 
   React.useEffect(() => {
-    ws.current = new WebSocket("wss://8yl2t66wok.execute-api.us-east-1.amazonaws.com/dev");
+    ws.current = new WebSocket(
+      "wss://xx9p3scloj.execute-api.us-east-1.amazonaws.com/dev"
+    );
     ws.current.onopen = () => console.log("ws opened");
     ws.current.onclose = () => console.log("ws closed");
 
@@ -123,7 +125,7 @@ export function InputMessage() {
   const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>): any => {
     e.preventDefault();
     sendMessage(ws.current, user.id, selectedChannel.id, inputValue, "");
-    setInputValue('');
+    setInputValue("");
     (e.target as any).reset();
   };
   return (
@@ -140,22 +142,22 @@ export function InputMessage() {
       >
         <InputWrapper>
           <InputStyle
-            name='message'
+            name="message"
             onChange={onChangeInput}
-            type='text'
-            placeholder='Enter message and tap enter'
+            type="text"
+            placeholder="Enter message and tap enter"
           />
           <OptionsPanelStyle>
             <FontAwesomeIcon
-              icon='paperclip'
-              title='Upload image'
+              icon="paperclip"
+              title="Upload image"
               onClick={onClickUploadIcon}
             />
           </OptionsPanelStyle>
 
           <input
-            className='fileInput'
-            type='file'
+            className="fileInput"
+            type="file"
             onChange={(e) => onImageLoad(e)}
             ref={imgUploadRef}
           />

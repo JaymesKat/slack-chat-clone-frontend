@@ -1,4 +1,4 @@
-const apiId = "jh1yx4w8z9";
+const apiId = "owj92eb2sj";
 
 export const fetchMessages = async (channelId: string) => {
   const token = localStorage.getItem("token");

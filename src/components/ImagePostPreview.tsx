@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { sendMessage } from "../libs/socketClient";
 import { StoreContext } from "../store/store";
-import { getS3UploadUrl, postImageUpload } from "../api/images"
+import { getS3UploadUrl, postImageUpload } from "../api/images";
 export interface Image {
   file: any;
   previewUrl: string;
@@ -98,11 +98,12 @@ export const Button = styled.button`
 `;
 
 export function ImagePostPreview({ exitCallback, image, message }: Props) {
-
   const ws: any = React.useRef(null);
 
   React.useEffect(() => {
-    ws.current = new WebSocket("wss://8yl2t66wok.execute-api.us-east-1.amazonaws.com/dev");
+    ws.current = new WebSocket(
+      "wss://xx9p3scloj.execute-api.us-east-1.amazonaws.com/dev"
+    );
     ws.current.onopen = () => console.log("ws opened");
     ws.current.onclose = () => console.log("ws closed");
 
@@ -126,7 +127,13 @@ export function ImagePostPreview({ exitCallback, image, message }: Props) {
     const uploadUrl = await getUploadUrl(fileName);
     await uploadImage(uploadUrl, image.file);
 
-    sendMessage(ws.current, user.id, selectedChannel.id, inputMessage || 'Image', fileName);
+    sendMessage(
+      ws.current,
+      user.id,
+      selectedChannel.id,
+      inputMessage || "Image",
+      fileName
+    );
 
     setisLoading(false);
     exitCallback();
@@ -134,7 +141,7 @@ export function ImagePostPreview({ exitCallback, image, message }: Props) {
 
   const getUploadUrl = async (fileName: string): Promise<any> => {
     const data = await getS3UploadUrl(fileName);
-    return data.url
+    return data.url;
   };
 
   const uploadImage = async (uploadUrl: string, file: string): Promise<any> => {
@@ -149,30 +156,30 @@ export function ImagePostPreview({ exitCallback, image, message }: Props) {
     <Container>
       <ExitButtonContainer>
         <ButtonClose onClick={exitCallback}>
-          <FontAwesomeIcon style={{ display: "block" }} icon='times-circle' />
+          <FontAwesomeIcon style={{ display: "block" }} icon="times-circle" />
           esc
         </ButtonClose>
       </ExitButtonContainer>
 
       <h1>Upload photo</h1>
       <Form onSubmit={(e) => postMessage(e)}>
-        <label htmlFor='message'>Message</label>
+        <label htmlFor="message">Message</label>
         <input
-          name='message'
-          id='message'
-          placeholder='Add message'
+          name="message"
+          id="message"
+          placeholder="Add message"
           onChange={onChange}
           value={inputMessage}
         />
         {image && (
           <ImagePreview>
-            <img src={image.previewUrl} alt='Preview' />
+            <img src={image.previewUrl} alt="Preview" />
           </ImagePreview>
         )}
 
         <Button onClick={exitCallback}>Cancel</Button>
-        <Button type='submit' disabled={loading}>
-          {loading && <FontAwesomeIcon icon='spinner' pulse />}
+        <Button type="submit" disabled={loading}>
+          {loading && <FontAwesomeIcon icon="spinner" pulse />}
           {loading && "Posting..."}
           {!loading && "Post"}
         </Button>
